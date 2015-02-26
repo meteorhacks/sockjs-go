@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	wsServer = websocket.Server{Handler: wsHandler, Handshake: wsHandshake}
+	wsServer = websocket.Server{Handler: wsHandler, Handshake: WSHandshake}
 	handlers = make(map[*http.Request]*handler)
 )
 
@@ -56,7 +56,7 @@ func wsHandler(conn *websocket.Conn) {
 	sess.close()
 }
 
-func wsHandshake(config *websocket.Config, req *http.Request) error {
+func WSHandshake(config *websocket.Config, req *http.Request) error {
 	// accept all connections by default
 	return nil
 }
