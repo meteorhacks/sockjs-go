@@ -67,8 +67,8 @@ func TestHandler_WebSocketTerminationByServer(t *testing.T) {
 	_, msg, err = conn.ReadMessage()
 	// gorilla websocket keeps `errUnexpectedEOF` private so we need to introspect the error message
 	if err != nil {
-		if !strings.Contains(err.Error(), "unexpected EOF") {
-			t.Errorf("Expected 'unexpected EOF' error or similar, got '%v'", err)
+		if !strings.Contains(err.Error(), "EOF") {
+			t.Errorf("Expected 'EOF' error or similar, got '%v'", err)
 		}
 	}
 }
