@@ -9,8 +9,9 @@ import (
 )
 
 var (
-	wsServer = websocket.Server{Handler: wsHandler, Handshake: WSHandshake}
-	handlers = make(map[*http.Request]*handler)
+	WSHandshake func(config *websocket.Config, req *http.Request) error
+	wsServer    = websocket.Server{Handler: wsHandler, Handshake: handshake}
+	handlers    = make(map[*http.Request]*handler)
 )
 
 func wsHandler(conn *websocket.Conn) {
@@ -56,9 +57,13 @@ func wsHandler(conn *websocket.Conn) {
 	sess.close()
 }
 
-func WSHandshake(config *websocket.Config, req *http.Request) error {
-	// accept all connections by default
-	return nil
+func handshake(config *websocket.Config, req *http.Request) error {
+	if WSHandshake != nil {
+		return WSHandshake(config, req)
+	} else {
+		// accept all connections by default
+		return nil
+	}
 }
 
 func (h *handler) sockjsWebsocket(rw http.ResponseWriter, req *http.Request) {
